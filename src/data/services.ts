@@ -1,5 +1,6 @@
 import { Building2, Hammer, Home, PackageOpen, Sofa, Sparkles } from 'lucide-react';
 import type { Service, ServiceCategory } from '../types';
+import { asset } from '../lib/asset';
 
 export const serviceCategories: { id: ServiceCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All services' },
@@ -17,7 +18,7 @@ export const services: Service[] = [
       'Our standard home cleaning covers the rooms you live in every day. It is ideal as a weekly, bi-weekly or one-off visit to keep your home consistently clean without giving up your free time.',
     category: 'residential',
     icon: Home,
-    image: '/images/home-cleaning.webp',
+    image: asset('/images/home-cleaning.webp'),
     imageAlt: 'Gloved hand scrubbing a kitchen counter with a sponge',
     benefits: [
       'More free time for the things you enjoy',
@@ -54,7 +55,7 @@ export const services: Service[] = [
       'Deep cleaning goes beyond routine upkeep to tackle built-up grime, hard-to-reach areas and detailed surfaces. It is a great reset before a special occasion, at the change of seasons, or before starting a regular cleaning plan.',
     category: 'residential',
     icon: Sparkles,
-    image: '/images/deep-cleaning.webp',
+    image: asset('/images/deep-cleaning.webp'),
     imageAlt: 'Mop cleaning a polished hardwood floor',
     benefits: ['A full reset for your space', 'Attention to detail in every room', 'A cleaner baseline for regular upkeep'],
     included: [
@@ -86,7 +87,7 @@ export const services: Service[] = [
       'Office cleaning keeps desks, meeting rooms, kitchens and washrooms in great shape. Visits can be scheduled outside working hours to avoid disruption to your team.',
     category: 'commercial',
     icon: Building2,
-    image: '/images/office-cleaning.webp',
+    image: asset('/images/office-cleaning.webp'),
     imageAlt: 'Bright modern open-plan office with desks and plants',
     benefits: ['A professional environment for clients and staff', 'Scheduling around your business hours', 'Consistent standards every visit'],
     included: [
@@ -118,7 +119,7 @@ export const services: Service[] = [
       'Moving is stressful enough. Our move-in and move-out cleaning prepares an empty property thoroughly — inside cabinets, appliances and every room — so you can hand over keys or settle in with confidence.',
     category: 'residential',
     icon: PackageOpen,
-    image: '/images/move-in-out.webp',
+    image: asset('/images/move-in-out.webp'),
     imageAlt: 'Empty, sunlit living room with hardwood floors',
     benefits: ['Less stress on moving day', 'Helps with handover inspections', 'A truly fresh start in your new home'],
     included: [
@@ -150,7 +151,7 @@ export const services: Service[] = [
       'Upholstered furniture collects dust, stains and odours over time. Our upholstery cleaning uses fabric-appropriate methods to lift dirt and refresh your sofas, armchairs, cushions and more.',
     category: 'specialty',
     icon: Sofa,
-    image: '/images/sofa-upholstery.webp',
+    image: asset('/images/sofa-upholstery.webp'),
     imageAlt: 'Light blue sofa with patterned cushions in a bright room',
     benefits: ['Fresher, cleaner-looking furniture', 'Fabric-appropriate cleaning methods', 'Helps extend the life of your upholstery'],
     included: [
@@ -182,7 +183,7 @@ export const services: Service[] = [
       'Renovations leave behind fine dust, residue and debris in places you would never expect. Post-construction cleaning prepares newly built or renovated spaces for move-in or handover.',
     category: 'specialty',
     icon: Hammer,
-    image: '/images/post-construction.webp',
+    image: asset('/images/post-construction.webp'),
     imageAlt: 'Newly renovated room with fresh walls and large windows',
     benefits: ['A move-in ready space after works', 'Removal of fine construction dust', 'Detailed finishing on new fixtures'],
     included: [

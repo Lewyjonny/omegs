@@ -1,5 +1,6 @@
 import { whyChooseUs } from '../../data/content';
 import { SectionHeading } from '../ui/SectionHeading';
+import { asset } from '../../lib/asset';
 
 export function WhyChoose() {
   return (
@@ -15,7 +16,7 @@ export function WhyChoose() {
             />
           </div>
           <div className="relative mt-10 hidden overflow-hidden rounded-4xl lg:block">
-            <img src="/images/about-cleaner.webp" alt="Cleaner carefully wiping a window frame" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+            <img src={asset('/images/about-cleaner.webp')} alt="Cleaner carefully wiping a window frame" loading="lazy" className="aspect-[4/3] w-full object-cover" />
           </div>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:col-span-7">

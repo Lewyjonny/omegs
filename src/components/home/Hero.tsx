@@ -1,5 +1,6 @@
 import { ArrowRight, CalendarClock, MousePointerClick, ShieldCheck, Sparkles } from 'lucide-react';
 import { ButtonLink } from '../ui/Button';
+import { asset } from '../../lib/asset';
 
 const trust = [
   { icon: ShieldCheck, label: 'Professional service' },
@@ -47,7 +48,7 @@ export function Hero() {
         <div className="relative lg:col-span-6">
           <div className="relative overflow-hidden rounded-4xl bg-navy-50 shadow-lift ring-1 ring-navy-900/5">
             <img
-              src="/images/hero.webp"
+              src={asset('/images/hero.webp')}
               alt="Bright, freshly cleaned living room with a grey sofa, plants and wooden floors"
               width={1024}
               height={683}
@@ -56,7 +57,7 @@ export function Hero() {
             />
           </div>
           <div className="absolute -bottom-6 left-4 right-4 flex items-center gap-4 rounded-3xl bg-white/95 p-4 shadow-lift ring-1 ring-navy-900/5 backdrop-blur sm:left-auto sm:right-8 sm:w-80">
-            <img src="/images/surface.webp" alt="" className="h-14 w-14 rounded-2xl object-cover" />
+            <img src={asset('/images/surface.webp')} alt="" className="h-14 w-14 rounded-2xl object-cover" />
             <div>
               <p className="text-sm font-semibold text-navy-900">Book in a few taps</p>
               <p className="text-xs text-navy-500">Choose a service, date and time — we handle the rest.</p>

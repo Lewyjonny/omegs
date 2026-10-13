@@ -3,6 +3,7 @@ import { FinalCta } from '../components/home/FinalCta';
 import { PageHeader } from '../components/ui/PageHeader';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { asset } from '../lib/asset';
 
 const values = [
   { icon: ShieldCheck, title: 'Trust', description: 'Inviting someone into your space requires trust. We aim to earn it with reliability, respect and clear communication.' },
@@ -23,7 +24,7 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24">
         <div className="container-page grid items-center gap-12 lg:grid-cols-2">
           <div className="overflow-hidden rounded-4xl shadow-lift">
-            <img src="/images/about-cleaner.webp" alt="Cleaner wiping a window frame in a bright room" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+            <img src={asset('/images/about-cleaner.webp')} alt="Cleaner wiping a window frame in a bright room" loading="lazy" className="aspect-[4/3] w-full object-cover" />
           </div>
           <div>
             <SectionHeading align="left" eyebrow="Our mission" title="A cleaner space for a better day" />

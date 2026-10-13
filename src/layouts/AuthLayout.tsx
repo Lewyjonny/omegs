@@ -2,6 +2,7 @@ import { ShieldCheck } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/Logo';
+import { asset } from '../lib/asset';
 
 interface Props {
   title: string;
@@ -11,7 +12,7 @@ interface Props {
   quote?: string;
 }
 
-export function AuthLayout({ title, subtitle, children, image = '/images/bedroom.webp', quote = 'A cleaner space. A better day.' }: Props) {
+export function AuthLayout({ title, subtitle, children, image = asset('/images/bedroom.webp'), quote = 'A cleaner space. A better day.' }: Props) {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col px-5 py-8 sm:px-10 lg:px-16">

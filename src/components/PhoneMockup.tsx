@@ -1,5 +1,6 @@
 import { Bell, CalendarDays, Home, Sparkles, User } from 'lucide-react';
 import { services } from '../data/services';
+import { asset } from '../lib/asset';
 
 /** Illustrative app UI preview — not a screenshot of a released app. */
 export function PhoneMockup({ className = '' }: { className?: string }) {
@@ -45,7 +46,7 @@ export function PhoneMockup({ className = '' }: { className?: string }) {
               ))}
             </div>
             <div className="mt-4 flex items-center gap-3 rounded-2xl bg-white p-3 shadow-soft">
-              <img src="/images/sofa-upholstery.webp" alt="" className="h-11 w-11 rounded-xl object-cover" loading="lazy" />
+              <img src={asset('/images/sofa-upholstery.webp')} alt="" className="h-11 w-11 rounded-xl object-cover" loading="lazy" />
               <div className="flex-1">
                 <p className="text-[11px] font-semibold text-navy-900">Sofa & Upholstery</p>
                 <p className="text-[10px] text-navy-500">View what's included</p>

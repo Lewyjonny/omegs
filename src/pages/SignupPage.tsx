@@ -9,6 +9,7 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { hasErrors, isEmail, isPhone, passwordIssues, type Errors } from '../lib/validation';
 import { AuthError } from '../services/auth';
 import { AuthModeNotice } from './authShared';
+import { asset } from '../lib/asset';
 
 interface SignupForm {
   fullName: string;
@@ -91,7 +92,7 @@ export default function SignupPage() {
           </Link>
         </>
       }
-      image="/images/kitchen.webp"
+      image={asset('/images/kitchen.webp')}
     >
       <div className="space-y-4">
         <AuthModeNotice />
