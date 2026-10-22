@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AdminRoute, ProtectedRoute } from './components/ProtectedRoute';
+import { AdminRoute, ProtectedRoute, StaffRoute } from './components/ProtectedRoute';
 import { MainLayout, ScrollToTop } from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -18,6 +18,7 @@ const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
+const StaffPage = lazy(() => import('./pages/StaffPage'));
 
 const PageFallback = () => <div className="min-h-[60vh]" aria-busy="true" />;
 
@@ -58,6 +59,14 @@ export default function App() {
               <AdminRoute>
                 <AdminPage />
               </AdminRoute>
+            }
+          />
+          <Route
+            path="staff"
+            element={
+              <StaffRoute>
+                <StaffPage />
+              </StaffRoute>
             }
           />
           <Route path="*" element={<NotFoundPage />} />

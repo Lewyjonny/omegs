@@ -168,6 +168,11 @@ export function Navbar() {
         <div className="hidden items-center gap-2 lg:flex">
           {user ? (
             <>
+              {(role === 'employee' || role === 'admin') && (
+                <NavLink to="/staff" className={navLinkClass}>
+                  Staff
+                </NavLink>
+              )}
               {role === 'admin' && (
                 <NavLink to="/admin" className={navLinkClass}>
                   Admin
@@ -234,6 +239,11 @@ export function Navbar() {
                 {label}
               </NavLink>
             ))}
+            {(role === 'employee' || role === 'admin') && (
+              <NavLink to="/staff" className={({ isActive }) => `rounded-2xl px-4 py-3 text-base font-semibold ${isActive ? 'bg-navy-50' : ''}`}>
+                Staff
+              </NavLink>
+            )}
             {role === 'admin' && (
               <NavLink to="/admin" className={({ isActive }) => `rounded-2xl px-4 py-3 text-base font-semibold ${isActive ? 'bg-navy-50' : ''}`}>
                 Admin
