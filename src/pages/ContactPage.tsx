@@ -10,7 +10,7 @@ import { generalFaqs } from '../data/content';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { hasErrors, isEmail, type Errors } from '../lib/validation';
-import { contactService, type ContactMessage } from '../services/contact';
+import { ContactError, contactService, type ContactMessage } from '../services/contact';
 
 export default function ContactPage() {
   usePageMeta('Contact', 'Get in touch with Omegs about bookings, services or support.');
@@ -19,6 +19,7 @@ export default function ContactPage() {
   const [form, setForm] = useState<ContactMessage>(empty);
   const [errors, setErrors] = useState<Errors<ContactMessage>>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = useState('');
 
   const update = (field: keyof ContactMessage) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -29,9 +30,12 @@ export default function ContactPage() {
     event.preventDefault();
     const e: Errors<ContactMessage> = {};
     if (form.name.trim().length < 2) e.name = 'Please enter your name.';
+    if (form.name.trim().length > 120) e.name = 'Please keep your name under 120 characters.';
     if (!isEmail(form.email)) e.email = 'Please enter a valid email address.';
     if (form.subject.trim().length < 3) e.subject = 'Please add a short subject.';
+    else if (form.subject.trim().length > 150) e.subject = 'Please keep the subject under 150 characters.';
     if (form.message.trim().length < 10) e.message = 'Please write a message of at least 10 characters.';
+    else if (form.message.trim().length > 5000) e.message = 'Please keep your message under 5,000 characters.';
     setErrors(e);
     if (hasErrors(e)) return;
     setStatus('loading');
@@ -39,7 +43,8 @@ export default function ContactPage() {
       await contactService.send(form);
       setStatus('success');
       setForm(empty);
-    } catch {
+    } catch (err) {
+      setSubmitError(err instanceof ContactError ? err.message : "We couldn't send your message. Please try again or email us directly.");
       setStatus('error');
     }
   };
@@ -65,13 +70,13 @@ export default function ContactPage() {
                 </Alert>
               )}
               {status === 'success' && (
-                <Alert tone="success" title="Message ready" className="mt-5">
-                  Thanks for reaching out. {contactService.isDemo ? 'In demo mode your message was validated but not sent.' : "We'll be in touch soon."}
+                <Alert tone="success" title={contactService.isDemo ? 'Message ready' : 'Message sent'} className="mt-5">
+                  Thanks for reaching out. {contactService.isDemo ? 'In demo mode your message was validated but not sent.' : 'Our team has received your message and will get back to you soon.'}
                 </Alert>
               )}
               {status === 'error' && (
                 <Alert tone="error" className="mt-5">
-                  We couldn't send your message. Please try again or email us directly.
+                  {submitError}
                 </Alert>
               )}
               <form onSubmit={onSubmit} noValidate className="mt-8 space-y-5">
