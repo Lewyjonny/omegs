@@ -1,5 +1,5 @@
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { FaqAccordion } from '../components/FaqAccordion';
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
@@ -20,6 +20,11 @@ export default function ContactPage() {
   const [errors, setErrors] = useState<Errors<ContactMessage>>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = useState('');
+  const feedbackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (status === 'success' || status === 'error') feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [status]);
 
   const update = (field: keyof ContactMessage) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -69,6 +74,7 @@ export default function ContactPage() {
                   Messages are not delivered yet — this form is not connected to an email service.
                 </Alert>
               )}
+              <div ref={feedbackRef} className="scroll-mt-24" />
               {status === 'success' && (
                 <Alert tone="success" title={contactService.isDemo ? 'Message ready' : 'Message sent'} className="mt-5">
                   Thanks for reaching out. {contactService.isDemo ? 'In demo mode your message was validated but not sent.' : 'Our team has received your message and will get back to you soon.'}
