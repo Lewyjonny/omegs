@@ -643,10 +643,22 @@ export default function AdminPage() {
         </div>
 
         <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} className="mt-6">
+          {!people.data ? (
+            people.error ? (
+              <Alert tone="error">{people.error}</Alert>
+            ) : (
+              <p className="py-10 text-center text-navy-600" role="status">
+                Loading…
+              </p>
+            )
+          ) : (
+            <>
           {tab === 'bookings' && <BookingsTab people={list} />}
           {tab === 'messages' && <MessagesTab />}
           {tab === 'timesheets' && <TimesheetsTab people={list} />}
           {tab === 'users' && <UsersTab people={list} error={people.error} loading={people.loading} reload={people.reload} />}
+            </>
+          )}
         </div>
       </div>
     </section>
