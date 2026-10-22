@@ -52,7 +52,10 @@ export interface Booking {
   propertySize: string;
   notes?: string;
   createdAt: string;
-  status: 'requested';
+  status: BookingStatus;
+  cancelledAt?: string;
 }
 
-export type BookingInput = Omit<Booking, 'id' | 'createdAt' | 'status'>;
+export type BookingStatus = 'requested' | 'confirmed' | 'completed' | 'cancelled';
+
+export type BookingInput = Omit<Booking, 'id' | 'createdAt' | 'status' | 'cancelledAt'>;

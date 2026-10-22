@@ -10,7 +10,7 @@ import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { formatDate } from '../lib/format';
 import { hasErrors, type Errors } from '../lib/validation';
-import { bookingService } from '../services/booking';
+import { BookingError, bookingService } from '../services/booking';
 import type { Booking, BookingInput } from '../types';
 
 const todayIso = () => {
@@ -45,6 +45,7 @@ export default function BookPage() {
     if (!v.date) e.date = 'Please choose a preferred date.';
     else if (v.date < minDate) e.date = 'Please choose a date from today onwards.';
     if (!v.time) e.time = 'Please choose a preferred time.';
+    else if (v.date === minDate && new Date(`${v.date}T${v.time}`) <= new Date()) e.time = 'This time has already passed today. Please choose a later time.';
     if (v.address.trim().length < 5) e.address = 'Please enter the address for the cleaning.';
     if (!v.propertySize) e.propertySize = 'Please select the property size.';
     return e;
@@ -61,8 +62,8 @@ export default function BookPage() {
       const booking = await bookingService.create(user.id, { ...form, address: form.address.trim(), notes: form.notes?.trim() });
       setConfirmed(booking);
       window.scrollTo({ top: 0 });
-    } catch {
-      setSubmitError('We could not save your booking request. Please try again.');
+    } catch (err) {
+      setSubmitError(err instanceof BookingError ? err.message : 'We could not save your booking request. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -97,9 +98,15 @@ export default function BookPage() {
                 <dd className="text-right font-semibold text-navy-900">{confirmed.address}</dd>
               </div>
             </dl>
-            <Alert tone="demo" title="Demo booking" className="mt-6 text-left">
-              This request is saved only in your browser for demonstration. It has not been sent to Omegs or stored in a production database.
-            </Alert>
+            {bookingService.isDemo ? (
+              <Alert tone="demo" title="Demo booking" className="mt-6 text-left">
+                This request is saved only in your browser for demonstration. It has not been sent to Omegs or stored in a production database.
+              </Alert>
+            ) : (
+              <Alert tone="info" title="What happens next" className="mt-6 text-left">
+                Our team will review your request and confirm your booking. You can check its status or cancel it any time before the cleaning under My bookings.
+              </Alert>
+            )}
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <ButtonLink to="/account">View my bookings</ButtonLink>
               <Button
@@ -125,9 +132,11 @@ export default function BookPage() {
           <span className="eyebrow">Book a cleaning</span>
           <h1 className="mt-4 text-3xl font-bold sm:text-4xl">Tell us about your cleaning</h1>
           <p className="mt-3 text-navy-600">Choose a service and your preferred time. We'll use these details to confirm your booking.</p>
-          <Alert tone="demo" title="Demo booking flow" className="mt-6">
-            Bookings are saved only in this browser until a booking backend is connected. Nothing is sent to Omegs yet.
-          </Alert>
+          {bookingService.isDemo && (
+            <Alert tone="demo" title="Demo booking flow" className="mt-6">
+              Bookings are saved only in this browser until a booking backend is connected. Nothing is sent to Omegs yet.
+            </Alert>
+          )}
           {submitError && (
             <Alert tone="error" className="mt-4">
               {submitError}
