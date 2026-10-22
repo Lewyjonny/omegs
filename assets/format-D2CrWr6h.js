@@ -1,0 +1,1 @@
+const o=e=>new Date(`${e}T00:00:00`).toLocaleDateString(void 0,{weekday:"long",month:"long",day:"numeric",year:"numeric"}),t="GBP",a=e=>new Intl.NumberFormat(void 0,{style:"currency",currency:t}).format(e),n=e=>`${e.toFixed(2)} h`,r=(e=new Date)=>new Date(e.getTime()-e.getTimezoneOffset()*6e4).toISOString().slice(0,10);export{n as a,a as b,o as f,r as l};
