@@ -1,6 +1,6 @@
 import type { User } from '@supabase/supabase-js';
 import { isSupabaseConfigured, setRememberSession, supabase } from '../lib/supabase';
-import type { AppUser } from '../types';
+import type { AppUser, UserRole } from '../types';
 
 export interface SignUpInput {
   fullName: string;
@@ -22,6 +22,7 @@ export interface AuthService {
   signOut(): Promise<void>;
   requestPasswordReset(email: string): Promise<void>;
   updatePassword(password: string): Promise<void>;
+  getRole(userId: string): Promise<UserRole>;
   onChange(callback: (user: AppUser | null) => void): () => void;
 }
 
@@ -91,6 +92,10 @@ const supabaseAuth = (): AuthService => {
         if (m.includes('different from the old')) throw new AuthError('Your new password must be different from your old password.');
         throw new AuthError(friendlySupabaseError(error.message));
       }
+    },
+    async getRole(userId) {
+      const { data } = await client.from('profiles').select('role').eq('id', userId).maybeSingle();
+      return (data?.role as UserRole | undefined) ?? 'customer';
     },
     onChange(callback) {
       const { data } = client.auth.onAuthStateChange((_event, session) => {
@@ -174,6 +179,9 @@ const demoAuth = (): AuthService => {
       if (!session) throw new AuthError('Your reset link is invalid or has expired. Please request a new one.');
       const passwordHash = await hash(password);
       localStorage.setItem(DEMO_USERS, JSON.stringify(readUsers().map((u) => (u.id === session.id ? { ...u, passwordHash } : u))));
+    },
+    async getRole() {
+      return 'customer';
     },
     onChange(callback) {
       listeners.add(callback);

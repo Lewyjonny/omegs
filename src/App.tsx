@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { AdminRoute, ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout, ScrollToTop } from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
 const BookPage = lazy(() => import('./pages/BookPage'));
@@ -49,6 +50,14 @@ export default function App() {
               <ProtectedRoute>
                 <AccountPage />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin"
+            element={
+              <AdminRoute>
+                <AdminPage />
+              </AdminRoute>
             }
           />
           <Route path="*" element={<NotFoundPage />} />

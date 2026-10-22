@@ -104,7 +104,7 @@ function ServicesDropdown() {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, role, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -168,6 +168,11 @@ export function Navbar() {
         <div className="hidden items-center gap-2 lg:flex">
           {user ? (
             <>
+              {role === 'admin' && (
+                <NavLink to="/admin" className={navLinkClass}>
+                  Admin
+                </NavLink>
+              )}
               <NavLink to="/account" className={navLinkClass}>
                 My bookings
               </NavLink>
@@ -229,6 +234,11 @@ export function Navbar() {
                 {label}
               </NavLink>
             ))}
+            {role === 'admin' && (
+              <NavLink to="/admin" className={({ isActive }) => `rounded-2xl px-4 py-3 text-base font-semibold ${isActive ? 'bg-navy-50' : ''}`}>
+                Admin
+              </NavLink>
+            )}
             {user && (
               <NavLink to="/account" className={({ isActive }) => `rounded-2xl px-4 py-3 text-base font-semibold ${isActive ? 'bg-navy-50' : ''}`}>
                 My bookings

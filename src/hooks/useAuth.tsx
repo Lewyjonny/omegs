@@ -1,10 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { authService, type SignUpInput, type SignUpResult } from '../services/auth';
-import type { AppUser } from '../types';
+import type { AppUser, UserRole } from '../types';
 
 interface AuthContextValue {
   user: AppUser | null;
   loading: boolean;
+  /** `undefined` while the signed-in user's role is still loading. */
+  role: UserRole | null | undefined;
   mode: 'supabase' | 'demo';
   signIn: (email: string, password: string, remember: boolean) => Promise<AppUser>;
   signUp: (input: SignUpInput) => Promise<SignUpResult>;
@@ -18,6 +20,19 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [roleState, setRoleState] = useState<{ userId: string; role: UserRole } | null>(null);
+  const userId = user?.id;
+
+  useEffect(() => {
+    if (!userId) return;
+    let active = true;
+    authService.getRole(userId).then((role) => active && setRoleState({ userId, role }));
+    return () => {
+      active = false;
+    };
+  }, [userId]);
+
+  const role = !userId ? null : roleState?.userId === userId ? roleState.role : undefined;
 
   useEffect(() => {
     let active = true;
@@ -51,8 +66,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading, mode: authService.mode, signIn, signUp, signOut, requestPasswordReset: authService.requestPasswordReset, updatePassword: authService.updatePassword }),
-    [user, loading, signIn, signUp, signOut],
+    () => ({ user, loading, role, mode: authService.mode, signIn, signUp, signOut, requestPasswordReset: authService.requestPasswordReset, updatePassword: authService.updatePassword }),
+    [user, loading, role, signIn, signUp, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

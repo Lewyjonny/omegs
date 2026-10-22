@@ -36,6 +36,8 @@ export interface Faq {
   answer: string;
 }
 
+export type UserRole = 'customer' | 'employee' | 'admin';
+
 export interface AppUser {
   id: string;
   email: string;
