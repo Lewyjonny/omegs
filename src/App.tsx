@@ -13,6 +13,7 @@ const DownloadPage = lazy(() => import('./pages/DownloadPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<SignupPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPasswordPage />} />
       </Routes>
       </Suspense>
     </>

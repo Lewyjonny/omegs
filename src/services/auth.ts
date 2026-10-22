@@ -21,10 +21,14 @@ export interface AuthService {
   signUp(input: SignUpInput): Promise<SignUpResult>;
   signOut(): Promise<void>;
   requestPasswordReset(email: string): Promise<void>;
+  updatePassword(password: string): Promise<void>;
   onChange(callback: (user: AppUser | null) => void): () => void;
 }
 
 export class AuthError extends Error {}
+
+/** Absolute URL inside this app, including the deploy base path (e.g. /omegs/ on GitHub Pages). */
+const appUrl = (path: string) => `${window.location.origin}${import.meta.env.BASE_URL}${path}`;
 
 const toAppUser = (user: User): AppUser => ({
   id: user.id,
@@ -63,7 +67,7 @@ const supabaseAuth = (): AuthService => {
         password,
         options: {
           data: { full_name: fullName, phone },
-          emailRedirectTo: `${window.location.origin}/login`,
+          emailRedirectTo: appUrl('account'),
         },
       });
       if (error) throw new AuthError(friendlySupabaseError(error.message));
@@ -77,8 +81,16 @@ const supabaseAuth = (): AuthService => {
       await client.auth.signOut();
     },
     async requestPasswordReset(email) {
-      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/login` });
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: appUrl('reset-password') });
       if (error) throw new AuthError(friendlySupabaseError(error.message));
+    },
+    async updatePassword(password) {
+      const { error } = await client.auth.updateUser({ password });
+      if (error) {
+        const m = error.message.toLowerCase();
+        if (m.includes('different from the old')) throw new AuthError('Your new password must be different from your old password.');
+        throw new AuthError(friendlySupabaseError(error.message));
+      }
     },
     onChange(callback) {
       const { data } = client.auth.onAuthStateChange((_event, session) => {
@@ -155,6 +167,13 @@ const demoAuth = (): AuthService => {
     },
     async requestPasswordReset() {
       await delay(700);
+    },
+    async updatePassword(password) {
+      await delay(500);
+      const session = readSession();
+      if (!session) throw new AuthError('Your reset link is invalid or has expired. Please request a new one.');
+      const passwordHash = await hash(password);
+      localStorage.setItem(DEMO_USERS, JSON.stringify(readUsers().map((u) => (u.id === session.id ? { ...u, passwordHash } : u))));
     },
     onChange(callback) {
       listeners.add(callback);

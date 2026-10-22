@@ -10,6 +10,7 @@ interface AuthContextValue {
   signUp: (input: SignUpInput) => Promise<SignUpResult>;
   signOut: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -50,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading, mode: authService.mode, signIn, signUp, signOut, requestPasswordReset: authService.requestPasswordReset }),
+    () => ({ user, loading, mode: authService.mode, signIn, signUp, signOut, requestPasswordReset: authService.requestPasswordReset, updatePassword: authService.updatePassword }),
     [user, loading, signIn, signUp, signOut],
   );
 

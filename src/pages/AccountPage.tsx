@@ -14,7 +14,9 @@ export default function AccountPage() {
   usePageMeta('My bookings');
   const { user, mode } = useAuth();
   const location = useLocation();
-  const welcome = (location.state as { welcome?: boolean } | null)?.welcome;
+  const navState = location.state as { welcome?: boolean; passwordUpdated?: boolean } | null;
+  const welcome = navState?.welcome;
+  const passwordUpdated = navState?.passwordUpdated;
   const [bookings, setBookings] = useState<Booking[] | null>(null);
 
   const load = useCallback(async () => {
@@ -45,6 +47,7 @@ export default function AccountPage() {
 
         <div className="mt-6 space-y-3">
           {welcome && <Alert tone="success" title="Account created">Welcome to Omegs! You can now book your first cleaning.</Alert>}
+          {passwordUpdated && <Alert tone="success" title="Password updated">Your new password is saved. Use it next time you log in.</Alert>}
           {mode === 'demo' && <Alert tone="demo">You're signed in with a demo account stored only in this browser.</Alert>}
         </div>
 
