@@ -15,4 +15,5 @@ jobs:
           SUPABASE_URL: https://xqirplrapdetueyftxvh.supabase.co
           # Publishable (public) key, the same one shipped in the website.
           SUPABASE_KEY: sb_publishable_PxVHKusEGzaJKh8OR4wQIw_FM005MB8
-        run: curl --fail --silent --show-error "$SUPABASE_URL/rest/v1/services?select=id&limit=1" -H "apikey: $SUPABASE_KEY"
+        run: |
+          curl --fail --silent --show-error "$SUPABASE_URL/rest/v1/services?select=id&limit=1" -H "apikey: $SUPABASE_KEY"
