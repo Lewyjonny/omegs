@@ -56,7 +56,7 @@ export default function ContactPage() {
 
   const details = [
     { icon: Mail, label: 'Email', value: siteConfig.contact.email, href: `mailto:${siteConfig.contact.email}` },
-    { icon: Phone, label: 'Phone', value: siteConfig.contact.phone },
+    { icon: Phone, label: 'Phone', value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}` },
     { icon: MapPin, label: 'Address', value: siteConfig.contact.address },
     { icon: Clock, label: 'Hours', value: siteConfig.contact.hours },
   ];

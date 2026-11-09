@@ -10,22 +10,17 @@ export const siteConfig = {
   description:
     'Omegs connects you with professional cleaning for homes and workplaces — simple to book, easy to manage from the Omegs mobile app.',
   contact: {
-    email: 'hello@omegs.example',
-    phone: '+1 (000) 000-0000',
-    address: 'Your business address, City, Country',
-    hours: 'Mon – Sat, 8:00 – 18:00',
-    isPlaceholder: true,
+    email: 'info@omegscleaning.co.uk',
+    phone: '+44 7565 666 871',
+    address: 'Sherwood Business Centre, 616a–620a Mansfield Road, Nottingham NG5 2GA',
+    hours: 'Mon – Sat, 8:00 – 18:00 (Sunday closed)',
+    isPlaceholder: false,
   },
   appStores: {
     ios: env.VITE_APP_STORE_URL || '',
     android: env.VITE_GOOGLE_PLAY_URL || '',
   },
-  social: [
-    { label: 'Instagram', href: '' },
-    { label: 'Facebook', href: '' },
-    { label: 'LinkedIn', href: '' },
-    { label: 'X', href: '' },
-  ],
+  social: [{ label: 'TikTok', href: 'https://www.tiktok.com/@omegscleaningservicesltd' }],
 } as const;
 
 export const isAppPublished = (platform: 'ios' | 'android') => Boolean(siteConfig.appStores[platform]);
