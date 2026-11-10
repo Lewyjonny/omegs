@@ -1,11 +1,11 @@
-import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { FaqAccordion } from '../components/FaqAccordion';
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
 import { TextAreaField, TextField } from '../components/ui/FormField';
 import { PageHeader } from '../components/ui/PageHeader';
-import { siteConfig } from '../config/site';
+import { siteConfig, whatsappLink } from '../config/site';
 import { generalFaqs } from '../data/content';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -57,6 +57,7 @@ export default function ContactPage() {
   const details = [
     { icon: Mail, label: 'Email', value: siteConfig.contact.email, href: `mailto:${siteConfig.contact.email}` },
     { icon: Phone, label: 'Phone', value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}` },
+    { icon: MessageCircle, label: 'WhatsApp', value: 'Chat or book on WhatsApp', href: whatsappLink() },
     { icon: MapPin, label: 'Address', value: siteConfig.contact.address },
     { icon: Clock, label: 'Hours', value: siteConfig.contact.hours },
   ];

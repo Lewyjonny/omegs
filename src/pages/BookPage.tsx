@@ -1,6 +1,7 @@
 import { CalendarDays, CheckCircle2, Clock, MapPin } from 'lucide-react';
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { WhatsAppLink } from '../components/WhatsAppLink';
 import { Alert } from '../components/ui/Alert';
 import { Button, ButtonLink } from '../components/ui/Button';
 import { SelectField, TextAreaField, TextField } from '../components/ui/FormField';
@@ -33,6 +34,18 @@ export default function BookPage() {
   const [confirmed, setConfirmed] = useState<Booking | null>(null);
   const minDate = useMemo(todayIso, []);
   const selected = getServiceById(form.serviceId);
+  const whatsappBookingText = [
+    "Hi Omegs, I'd like to book a cleaning.",
+    selected && `Service: ${selected.name}`,
+    form.date && `Date: ${formatDate(form.date)}`,
+    form.time && `Time: ${form.time}`,
+    form.address.trim() && `Address: ${form.address.trim()}`,
+    form.propertySize && `Property size: ${form.propertySize}`,
+    form.notes?.trim() && `Notes: ${form.notes.trim()}`,
+    user && `Name: ${user.fullName}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   const update = (field: keyof BookingInput) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -203,6 +216,12 @@ export default function BookPage() {
               {loading ? 'Submitting request…' : 'Request booking'}
             </Button>
           </form>
+          <div className="card mt-6 flex flex-col items-center gap-4 p-6 text-center sm:flex-row sm:text-left">
+            <p className="flex-1 text-sm text-navy-600">Prefer to chat? Send these details to us on WhatsApp instead and we'll confirm your booking there.</p>
+            <WhatsAppLink className="h-11 px-5 text-sm" text={whatsappBookingText}>
+              Book on WhatsApp
+            </WhatsAppLink>
+          </div>
         </div>
 
         <aside className="lg:col-span-5">
@@ -229,7 +248,7 @@ export default function BookPage() {
                     </li>
                   </ul>
                   <p className="mt-6 border-t border-navy-100 pt-5 text-sm text-navy-500">
-                    Price: <span className="font-semibold text-navy-800">{selected.startingPrice !== null ? `From $${selected.startingPrice}` : 'Quoted before confirmation'}</span>
+                    Price: <span className="font-semibold text-navy-800">{selected.startingPrice !== null ? `From £${selected.startingPrice}` : 'Quoted before confirmation'}</span>
                   </p>
                   <Link to={`/services/${selected.id}`} className="mt-3 inline-block text-sm font-semibold text-mint-700 hover:underline">
                     What's included →

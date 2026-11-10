@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { FaqAccordion } from '../components/FaqAccordion';
 import { ServiceCard } from '../components/ServiceCard';
+import { WhatsAppLink } from '../components/WhatsAppLink';
 import { ButtonLink } from '../components/ui/Button';
 import { getServiceById, services } from '../data/services';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -50,9 +51,9 @@ export default function ServiceDetailPage() {
               <ButtonLink to={`/book?service=${service.id}`} size="lg">
                 Book {service.name} <ArrowRight className="h-4 w-4" aria-hidden />
               </ButtonLink>
-              <ButtonLink to="/contact" size="lg" variant="outline">
-                Ask a question
-              </ButtonLink>
+              <WhatsAppLink className="h-12 px-7 text-base" text={`Hi Omegs, I'd like to book ${service.name}.`}>
+                Book on WhatsApp
+              </WhatsAppLink>
             </div>
           </div>
           <div className="overflow-hidden rounded-4xl shadow-lift">
@@ -99,7 +100,7 @@ export default function ServiceDetailPage() {
               <p className="text-sm font-medium text-navy-500">Pricing</p>
               {service.startingPrice !== null ? (
                 <p className="mt-1 text-3xl font-bold">
-                  From ${service.startingPrice}
+                  From £{service.startingPrice}
                   <span className="text-base font-medium text-navy-500"> {service.priceUnit}</span>
                 </p>
               ) : (

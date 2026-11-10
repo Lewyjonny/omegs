@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer } from '../components/layout/Footer';
 import { Navbar } from '../components/layout/Navbar';
+import { WhatsAppFloatingButton } from '../components/WhatsAppLink';
 
 export function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,6 +22,7 @@ export function MainLayout() {
         </Suspense>
       </main>
       <Footer />
+      <WhatsAppFloatingButton />
     </div>
   );
 }
