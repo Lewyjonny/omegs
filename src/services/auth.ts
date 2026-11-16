@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js';
+import { siteConfig } from '../config/site';
 import { isSupabaseConfigured, setRememberSession, supabase } from '../lib/supabase';
 import type { AppUser, UserRole } from '../types';
 
@@ -28,8 +29,9 @@ export interface AuthService {
 
 export class AuthError extends Error {}
 
-/** Absolute URL inside this app, including the deploy base path (e.g. /omegs/ on GitHub Pages). */
-const appUrl = (path: string) => `${window.location.origin}${import.meta.env.BASE_URL}${path}`;
+/** Absolute URL inside this app, including the deploy base path (e.g. /omegs/ on GitHub Pages). Mobile apps link to the public website. */
+const appUrl = (path: string) =>
+  import.meta.env.MODE === 'native' ? `${siteConfig.webUrl}${path}` : `${window.location.origin}${import.meta.env.BASE_URL}${path}`;
 
 const toAppUser = (user: User): AppUser => ({
   id: user.id,

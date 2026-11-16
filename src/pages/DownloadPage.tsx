@@ -46,7 +46,7 @@ export default function DownloadPage() {
               website.
             </Alert>
           )}
-          <InstallAppCard />
+          {import.meta.env.MODE !== 'native' && <InstallAppCard />}
           <SectionHeading eyebrow="Features" title="Everything you need to manage your cleanings" />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, description }) => (

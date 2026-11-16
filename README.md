@@ -57,3 +57,15 @@ src/
 - **Pricing** — `startingPrice: null` shows "Price on request"; set real prices in `src/data/services.ts`.
 - **Testimonials** — labelled samples; replace with verified reviews.
 - **Legal pages, contact details, social links** — placeholders in `src/pages/LegalPage.tsx` and `src/config/site.ts`.
+
+## Mobile apps (Android and iOS)
+
+The apps wrap this website with [Capacitor](https://capacitorjs.com), so they share the same accounts, bookings and admin.
+
+```bash
+npm run build:native             # build the web app for the apps and copy it into android/ and ios/
+npx cap open android             # open in Android Studio (or: cd android && ./gradlew assembleDebug)
+npx cap open ios                 # open in Xcode (macOS only)
+```
+
+App ID: `uk.co.omegscleaning.app`. Icons and splash screens come from `resources/` (`npx @capacitor/assets generate`).

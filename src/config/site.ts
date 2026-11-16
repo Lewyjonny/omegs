@@ -16,6 +16,8 @@ export const siteConfig = {
     hours: 'Mon – Sat, 8:00 – 18:00 (Sunday closed)',
     isPlaceholder: false,
   },
+  /** Public web address, used for email links sent from the mobile apps. */
+  webUrl: env.VITE_PUBLIC_SITE_URL || 'https://lewyjonny.github.io/omegs/',
   appStores: {
     ios: env.VITE_APP_STORE_URL || '',
     android: env.VITE_GOOGLE_PLAY_URL || '',
