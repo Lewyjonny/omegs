@@ -2,6 +2,7 @@ import { ShieldCheck } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/Logo';
+import { WhatsAppFloatingButton } from '../components/WhatsAppLink';
 import { asset } from '../lib/asset';
 
 interface Props {
@@ -40,6 +41,7 @@ export function AuthLayout({ title, subtitle, children, image = asset('/images/b
           <p className="mt-3 max-w-md text-navy-200">Book, reschedule and keep track of every cleaning in one place.</p>
         </div>
       </div>
+      <WhatsAppFloatingButton />
     </div>
   );
 }

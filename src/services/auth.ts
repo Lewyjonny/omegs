@@ -43,7 +43,10 @@ const friendlySupabaseError = (message: string) => {
   if (m.includes('invalid login credentials')) return 'The email or password you entered is incorrect.';
   if (m.includes('email not confirmed')) return 'Please confirm your email address before logging in. Check your inbox for the confirmation link.';
   if (m.includes('already registered') || m.includes('already been registered')) return 'An account with this email already exists. Try logging in instead.';
+  if (m.includes('email rate limit') || m.includes('over_email_send_rate_limit'))
+    return "We couldn't send your email right now because too many were sent recently. Please try again in an hour, or contact us on WhatsApp.";
   if (m.includes('rate limit')) return 'Too many attempts. Please wait a moment and try again.';
+  if (m.includes('email address') && m.includes('invalid')) return 'Please enter a real email address you can receive mail at.';
   if (m.includes('password')) return message;
   return 'Something went wrong. Please try again.';
 };
