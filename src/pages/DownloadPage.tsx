@@ -1,5 +1,6 @@
 import { BellRing, CalendarCheck, FileText, RefreshCw, Smartphone, UserRound } from 'lucide-react';
 import { AppStoreButtons } from '../components/AppStoreButtons';
+import { InstallAppCard } from '../components/InstallAppCard';
 import { PhoneMockup } from '../components/PhoneMockup';
 import { Alert } from '../components/ui/Alert';
 import { ButtonLink } from '../components/ui/Button';
@@ -41,9 +42,11 @@ export default function DownloadPage() {
         <div className="container-page">
           {!published && (
             <Alert tone="info" title="Launching soon" className="mx-auto mb-12 max-w-2xl">
-              The Omegs app is not yet available on the App Store or Google Play. In the meantime, you can book directly on our website.
+              The Omegs app is not yet available on the App Store or Google Play. In the meantime, add Omegs to your home screen below or book on our
+              website.
             </Alert>
           )}
+          <InstallAppCard />
           <SectionHeading eyebrow="Features" title="Everything you need to manage your cleanings" />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, description }) => (

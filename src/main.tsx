@@ -5,6 +5,12 @@ import App from './App';
 import { AuthProvider } from './hooks/useAuth';
 import './index.css';
 
+if (import.meta.env.MODE === 'pages' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => undefined);
+  });
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL}>
