@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp, Eye, EyeOff, ImagePlus, Pencil, Plus, Trash2, Upload } from 'lucide-react';
-import { useId, useState, type ReactNode } from 'react';
+import { createContext, useContext, useId, useState, type ReactNode } from 'react';
 import { defaultContent, type ContentKey, type SiteContent } from '../../content/defaults';
 import { serviceIcons } from '../../content/icons';
 import { serviceCategories } from '../../data/services';
@@ -87,9 +87,13 @@ function ImageInput({ label, value, fallback, onChange, onError }: { label: stri
   );
 }
 
+/** Keeps save messages alive when a section re-mounts with freshly saved content. */
+const NoticeContext = createContext<[Notice, (n: Notice) => void] | null>(null);
+
 function useSaver() {
   const { reload } = useSiteContent();
-  const [notice, setNotice] = useState<Notice>(null);
+  const local = useState<Notice>(null);
+  const [notice, setNotice] = useContext(NoticeContext) ?? local;
   const [busy, setBusy] = useState(false);
   const run = async (action: () => Promise<void>, success: string) => {
     setBusy(true);
@@ -409,14 +413,17 @@ const sections: { id: Section; label: string }[] = [
 export function SiteEditor() {
   const { content } = useSiteContent();
   const [section, setSection] = useState<Section>('services');
+  const notice = useState<Notice>(null);
+  const showSection = (id: Section) => { notice[1](null); setSection(id); };
   const c: SiteContent = content;
   const d = defaultContent;
 
   return (
+    <NoticeContext.Provider value={notice}>
     <div className="grid gap-5">
       <div className="flex flex-wrap gap-2" aria-label="Parts of the site">
         {sections.map((s) => (
-          <button key={s.id} type="button" aria-pressed={section === s.id} onClick={() => setSection(s.id)} className={`rounded-full px-4 py-2 text-sm font-medium transition ${section === s.id ? 'bg-mint-400 text-navy-950' : 'bg-white text-navy-700 ring-1 ring-inset ring-navy-200 hover:bg-navy-50'}`}>
+          <button key={s.id} type="button" aria-pressed={section === s.id} onClick={() => showSection(s.id)} className={`rounded-full px-4 py-2 text-sm font-medium transition ${section === s.id ? 'bg-mint-400 text-navy-950' : 'bg-white text-navy-700 ring-1 ring-inset ring-navy-200 hover:bg-navy-50'}`}>
             {s.label}
           </button>
         ))}
@@ -472,5 +479,6 @@ export function SiteEditor() {
         ]} />
       )}
     </div>
+    </NoticeContext.Provider>
   );
 }
