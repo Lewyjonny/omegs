@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Read one active service
         env:
-          SUPABASE_URL: https://xqirplrapdetueyftxvh.supabase.co
+          SUPABASE_URL: https://swbajtfbtquldexucdcz.supabase.co
           # Publishable (public) key, the same one shipped in the website.
-          SUPABASE_KEY: sb_publishable_PxVHKusEGzaJKh8OR4wQIw_FM005MB8
+          SUPABASE_KEY: sb_publishable_Jgdzrb0CIKR7qdL7pkcu1w_Y-cG_0H3
         run: |
           curl --fail --silent --show-error "$SUPABASE_URL/rest/v1/services?select=id&limit=1" -H "apikey: $SUPABASE_KEY"
