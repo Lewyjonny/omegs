@@ -1,6 +1,6 @@
-import { CalendarDays, Clock, MapPin, X } from 'lucide-react';
+import { CalendarDays, Clock, MapPin, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert } from '../components/ui/Alert';
 import { Button, ButtonLink } from '../components/ui/Button';
 import { useSiteContent } from '../hooks/useSiteContent';
@@ -74,6 +74,54 @@ function BookingCard({ booking, onCancel }: { booking: Booking; onCancel?: (id: 
           </Button>
         ))}
     </li>
+  );
+}
+
+function DeleteAccount({ hasUpcoming }: { hasUpcoming: boolean }) {
+  const { role, deleteAccount } = useAuth();
+  const navigate = useNavigate();
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState('');
+
+  const remove = async () => {
+    setDeleting(true);
+    setError('');
+    try {
+      await deleteAccount();
+      navigate('/', { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'We could not delete your account. Please try again.');
+      setDeleting(false);
+    }
+  };
+
+  return (
+    <div className="card mt-12 p-6">
+      <h2 className="text-lg font-semibold">Delete my account</h2>
+      {role !== 'customer' ? (
+        <p className="mt-2 text-sm text-navy-600">Staff and admin accounts are removed by an Omegs admin.</p>
+      ) : (
+        <>
+          <p className="mt-2 text-sm text-navy-600">
+            This permanently deletes your account, your details and your booking history. It can't be undone.
+            {hasUpcoming && ' Please cancel your upcoming bookings first.'}
+          </p>
+          {error && <div className="mt-4"><Alert tone="error">{error}</Alert></div>}
+          {confirming ? (
+            <div className="mt-4 flex flex-wrap items-center gap-2" role="group" aria-label="Confirm account deletion">
+              <span className="text-sm font-medium text-red-700">Delete your account for good?</span>
+              <Button variant="outline" size="sm" className="text-red-700" onClick={remove} loading={deleting}>Yes, delete my account</Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirming(false)} disabled={deleting}>Keep my account</Button>
+            </div>
+          ) : (
+            <Button variant="ghost" size="sm" className="mt-4 text-red-700" onClick={() => setConfirming(true)} disabled={hasUpcoming}>
+              <Trash2 className="h-4 w-4" aria-hidden /> Delete my account
+            </Button>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
@@ -177,6 +225,8 @@ export default function AccountPage() {
             </ul>
           </div>
         )}
+
+        {bookings !== null && <DeleteAccount hasUpcoming={upcoming.length > 0} />}
       </div>
     </section>
   );
