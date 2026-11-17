@@ -59,8 +59,9 @@ const content: Record<'privacy' | 'terms', { title: string; intro: string; secti
       {
         heading: 'How long we keep it',
         body: [
-          'Account information: while your account is open. You can ask us to close it at any time.',
-          'Bookings and staff timesheets: 6 years after the booking or work, to meet UK accounting and tax rules.',
+          'Account information: while your account is open. You can delete your account at any time from My bookings (Delete my account), or ask us to do it.',
+          'Bookings: while your account is open. When you delete your account, your bookings are deleted straight away.',
+          'Staff timesheets: 6 years after the work, to meet UK accounting and tax rules.',
           'Contact messages: up to 2 years, unless they relate to a booking or complaint.',
         ],
       },
