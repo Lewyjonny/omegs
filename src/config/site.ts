@@ -25,7 +25,7 @@ export const siteConfig = {
   social: [{ label: 'TikTok', href: 'https://www.tiktok.com/@omegscleaningservicesltd' }],
 } as const;
 
-export const whatsappLink = (text = `Hi ${siteConfig.name}, I'd like to book a cleaning.`) =>
-  `https://wa.me/${siteConfig.contact.phone.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
+export const whatsappLink = (text = `Hi ${siteConfig.name}, I'd like to book a cleaning.`, phone: string = siteConfig.contact.phone) =>
+  `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
 
 export const isAppPublished = (platform: 'ios' | 'android') => Boolean(siteConfig.appStores[platform]);

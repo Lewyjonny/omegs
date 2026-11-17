@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 import { TextAreaField, TextField } from '../components/ui/FormField';
 import { PageHeader } from '../components/ui/PageHeader';
 import { siteConfig, whatsappLink } from '../config/site';
-import { generalFaqs } from '../data/content';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { hasErrors, isEmail, type Errors } from '../lib/validation';
@@ -15,6 +15,8 @@ import { ContactError, contactService, type ContactMessage } from '../services/c
 export default function ContactPage() {
   usePageMeta('Contact', 'Get in touch with Omegs about bookings, services or support.');
   const { user } = useAuth();
+  const { business } = useSiteContent().content;
+  const { faqs } = useSiteContent().content;
   const empty: ContactMessage = { name: user?.fullName ?? '', email: user?.email ?? '', subject: '', message: '' };
   const [form, setForm] = useState<ContactMessage>(empty);
   const [errors, setErrors] = useState<Errors<ContactMessage>>({});
@@ -55,11 +57,11 @@ export default function ContactPage() {
   };
 
   const details = [
-    { icon: Mail, label: 'Email', value: siteConfig.contact.email, href: `mailto:${siteConfig.contact.email}` },
-    { icon: Phone, label: 'Phone', value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}` },
-    { icon: MessageCircle, label: 'WhatsApp', value: 'Chat or book on WhatsApp', href: whatsappLink() },
-    { icon: MapPin, label: 'Address', value: siteConfig.contact.address },
-    { icon: Clock, label: 'Hours', value: siteConfig.contact.hours },
+    { icon: Mail, label: 'Email', value: business.email, href: `mailto:${business.email}` },
+    { icon: Phone, label: 'Phone', value: business.phone, href: `tel:${business.phone.replace(/\s/g, '')}` },
+    { icon: MessageCircle, label: 'WhatsApp', value: 'Chat or book on WhatsApp', href: whatsappLink(undefined, business.phone) },
+    { icon: MapPin, label: 'Address', value: business.address },
+    { icon: Clock, label: 'Hours', value: business.hours },
   ];
 
   return (
@@ -125,7 +127,7 @@ export default function ContactPage() {
             </div>
             <div>
               <h2 className="mb-4 text-xl font-semibold">Common questions</h2>
-              <FaqAccordion items={generalFaqs.slice(1, 5)} defaultOpen={null} />
+              <FaqAccordion items={faqs.slice(1, 5)} defaultOpen={null} />
             </div>
           </aside>
         </div>

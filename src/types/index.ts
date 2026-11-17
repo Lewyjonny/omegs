@@ -23,6 +23,11 @@ export interface Service {
   startingPrice: number | null;
   priceUnit?: string;
   faqs: ServiceFaq[];
+  /** Database fields used by the admin editor. */
+  iconName?: string;
+  imagePath?: string;
+  isActive?: boolean;
+  sortOrder?: number;
 }
 
 export interface Feature {

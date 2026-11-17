@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/StatusBadge';
-import { getServiceById } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { formatDate, formatHours, formatMoney, localIsoDate } from '../lib/format';
@@ -12,7 +12,10 @@ import { StaffError, staffService, type EntryInput, type StaffEntry, type StaffJ
 type Notice = { tone: 'success' | 'error'; text: string } | null;
 
 const errorText = (err: unknown) => (err instanceof StaffError ? err.message : 'Something went wrong. Please try again.');
-const serviceName = (id: string) => getServiceById(id)?.name ?? 'Cleaning job';
+const useServiceName = () => {
+  const { getService } = useSiteContent();
+  return (id: string) => getService(id)?.name ?? 'Cleaning job';
+};
 
 const minutes = (t: string) => {
   const [h, m] = t.split(':').map(Number);
@@ -80,6 +83,7 @@ function HoursForm({
   onSaved: (text: string) => void;
   onCancel: () => void;
 }) {
+  const serviceName = useServiceName();
   const [form, setForm] = useState<EntryInput>(() =>
     editing
       ? { bookingId: editing.bookingId, workDate: editing.workDate, startTime: editing.startTime, endTime: editing.endTime, breakMinutes: editing.breakMinutes, notes: editing.notes ?? '' }
@@ -207,6 +211,7 @@ function HoursForm({
 }
 
 function JobCard({ job, onLog }: { job: StaffJob; onLog?: () => void }) {
+  const serviceName = useServiceName();
   return (
     <li className="card p-5" aria-label={`Job: ${serviceName(job.serviceId)} on ${job.date}`}>
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -244,6 +249,7 @@ function JobCard({ job, onLog }: { job: StaffJob; onLog?: () => void }) {
 }
 
 function EntryCard({ entry, job, onEdit, onDelete }: { entry: StaffEntry; job?: StaffJob; onEdit: () => void; onDelete: () => void }) {
+  const serviceName = useServiceName();
   const locked = entry.status === 'approved';
   return (
     <li className="card p-5" aria-label={`Hours on ${entry.workDate} ${entry.startTime}`}>

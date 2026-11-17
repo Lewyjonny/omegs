@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { FinalCta } from '../components/home/FinalCta';
 import { PageHeader } from '../components/ui/PageHeader';
 import { ServiceCard } from '../components/ServiceCard';
-import { serviceCategories, services } from '../data/services';
+import { serviceCategories } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { usePageMeta } from '../hooks/usePageMeta';
 import type { ServiceCategory } from '../types';
 
@@ -11,7 +12,8 @@ export default function ServicesPage() {
   usePageMeta('Cleaning Services', 'Explore Omegs home, deep, office, move-in/move-out, upholstery and post-construction cleaning services.');
   const [params, setParams] = useSearchParams();
   const active = (params.get('category') as ServiceCategory | null) ?? 'all';
-  const filtered = useMemo(() => (active === 'all' ? services : services.filter((s) => s.category === active)), [active]);
+  const { services } = useSiteContent();
+  const filtered = useMemo(() => (active === 'all' ? services : services.filter((s) => s.category === active)), [active, services]);
 
   return (
     <>

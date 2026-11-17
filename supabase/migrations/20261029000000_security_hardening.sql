@@ -15,7 +15,11 @@ grant execute on function public.is_admin(), public.is_staff() to authenticated,
 drop function if exists public.current_user_role();
 
 -- Supabase's RLS auto-enable event trigger must not be callable through the API.
-revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
+do $$ begin
+  if to_regprocedure('public.rls_auto_enable()') is not null then
+    revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
+  end if;
+end $$;
 
 -- The API never needs these table privileges (TRUNCATE also bypasses RLS).
 revoke truncate, references, trigger

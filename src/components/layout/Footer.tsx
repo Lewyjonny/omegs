@@ -1,7 +1,7 @@
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { siteConfig } from '../../config/site';
-import { services } from '../../data/services';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { AppStoreButtons } from '../AppStoreButtons';
 import { Logo } from '../Logo';
 
@@ -19,13 +19,16 @@ function FooterHeading({ children }: { children: string }) {
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { services, content } = useSiteContent();
+  const { business } = content;
+  const social = business.tiktok ? [{ label: 'TikTok', href: business.tiktok }] : [];
   return (
     <footer className="bg-navy-950 text-navy-300">
       <div className="container-page py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Logo invert />
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-300">{siteConfig.description}</p>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-300">{business.description}</p>
             <div className="mt-6">
               <AppStoreButtons variant="dark" size="sm" />
             </div>
@@ -62,24 +65,24 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm">
               <li className="flex gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-mint-400" aria-hidden />
-                <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-white">
-                  {siteConfig.contact.email}
+                <a href={`mailto:${business.email}`} className="hover:text-white">
+                  {business.email}
                 </a>
               </li>
               <li className="flex gap-3">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-mint-400" aria-hidden />
-                <a href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`} className="hover:text-white">
-                  {siteConfig.contact.phone}
+                <a href={`tel:${business.phone.replace(/\s/g, '')}`} className="hover:text-white">
+                  {business.phone}
                 </a>
               </li>
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-mint-400" aria-hidden />
-                <span>{siteConfig.contact.address}</span>
+                <span>{business.address}</span>
               </li>
             </ul>
             {siteConfig.contact.isPlaceholder && <p className="mt-3 text-xs text-navy-400">Contact details are placeholders.</p>}
             <div className="mt-6 flex flex-wrap gap-2" aria-label="Social media">
-              {siteConfig.social.map((s) =>
+              {social.map((s) =>
                 s.href ? (
                   <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="rounded-full px-3 py-1.5 text-xs font-medium ring-1 ring-navy-700 hover:bg-navy-800 hover:text-white">
                     {s.label}

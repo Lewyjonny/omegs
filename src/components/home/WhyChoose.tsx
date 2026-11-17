@@ -1,8 +1,11 @@
+import { featureIcons } from '../../content/icons';
 import { whyChooseUs } from '../../data/content';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { SectionHeading } from '../ui/SectionHeading';
 import { asset } from '../../lib/asset';
 
 export function WhyChoose() {
+  const { whyChoose } = useSiteContent().content;
   return (
     <section className="py-20 lg:py-28" aria-labelledby="why-heading">
       <div className="container-page grid gap-14 lg:grid-cols-12">
@@ -20,15 +23,18 @@ export function WhyChoose() {
           </div>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:col-span-7">
-          {whyChooseUs.map(({ title, description, icon: Icon }) => (
-            <div key={title} className="card p-7 transition hover:shadow-lift">
+          {whyChoose.map(({ title, description }, i) => {
+            const Icon = whyChooseUs[i]?.icon ?? featureIcons[i % featureIcons.length];
+            return (
+            <div key={`${i}-${title}`} className="card p-7 transition hover:shadow-lift">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy-900 text-mint-300">
                 <Icon className="h-5 w-5" aria-hidden />
               </span>
               <h3 className="mt-5 text-lg font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-navy-600">{description}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

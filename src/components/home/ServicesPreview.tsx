@@ -1,10 +1,11 @@
 import { ArrowRight } from 'lucide-react';
-import { services } from '../../data/services';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { ServiceCard } from '../ServiceCard';
 import { ButtonLink } from '../ui/Button';
 import { SectionHeading } from '../ui/SectionHeading';
 
 export function ServicesPreview() {
+  const { services } = useSiteContent();
   return (
     <section className="bg-surface py-20 lg:py-28" aria-labelledby="services-heading">
       <div className="container-page">

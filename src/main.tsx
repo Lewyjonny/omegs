@@ -5,6 +5,7 @@ import { App as NativeApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import App from './App';
 import { AuthProvider } from './hooks/useAuth';
+import { SiteContentProvider } from './hooks/useSiteContent';
 import './index.css';
 
 if (import.meta.env.MODE === 'pages' && 'serviceWorker' in navigator) {
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
-        <App />
+        <SiteContentProvider>
+          <App />
+        </SiteContentProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>,

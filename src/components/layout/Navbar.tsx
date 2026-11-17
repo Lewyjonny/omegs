@@ -1,7 +1,7 @@
 import { ChevronDown, LogOut, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { services } from '../../data/services';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { useAuth } from '../../hooks/useAuth';
 import { Logo } from '../Logo';
 import { Button, ButtonLink } from '../ui/Button';
@@ -15,6 +15,7 @@ function ServicesDropdown() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const active = location.pathname.startsWith('/services');
+  const { services } = useSiteContent();
 
   useEffect(() => setOpen(false), [location.pathname]);
 
@@ -107,6 +108,7 @@ export function Navbar() {
   const { user, role, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { services } = useSiteContent();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);

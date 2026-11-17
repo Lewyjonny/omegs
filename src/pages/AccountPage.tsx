@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Alert } from '../components/ui/Alert';
 import { Button, ButtonLink } from '../components/ui/Button';
-import { getServiceById } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { BookingError, bookingService } from '../services/booking';
@@ -21,7 +21,7 @@ const hasStarted = (b: Booking) => new Date(`${b.date}T${b.time}`) <= new Date()
 const isUpcoming = (b: Booking) => (b.status === 'requested' || b.status === 'confirmed') && !hasStarted(b);
 
 function BookingCard({ booking, onCancel }: { booking: Booking; onCancel?: (id: string) => Promise<void> }) {
-  const service = getServiceById(booking.serviceId);
+  const service = useSiteContent().getService(booking.serviceId);
   const status = statusStyles[booking.status];
   const [confirming, setConfirming] = useState(false);
   const [cancelling, setCancelling] = useState(false);

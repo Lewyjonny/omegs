@@ -1,9 +1,10 @@
 import { Check, Mail, Phone, RefreshCw, RotateCcw, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { SiteEditor } from '../components/admin/SiteEditor';
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/StatusBadge';
-import { getServiceById } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { formatDate, formatHours, formatMoney, localIsoDate } from '../lib/format';
@@ -19,7 +20,7 @@ import {
 } from '../services/admin';
 import type { BookingStatus, UserRole } from '../types';
 
-type Tab = 'bookings' | 'messages' | 'timesheets' | 'users';
+type Tab = 'bookings' | 'messages' | 'timesheets' | 'users' | 'site';
 type Notice = { tone: 'success' | 'error'; text: string } | null;
 
 const tabs: { id: Tab; label: string }[] = [
@@ -27,6 +28,7 @@ const tabs: { id: Tab; label: string }[] = [
   { id: 'messages', label: 'Messages' },
   { id: 'timesheets', label: 'Timesheets' },
   { id: 'users', label: 'Users' },
+  { id: 'site', label: 'Edit site' },
 ];
 
 const errorText = (err: unknown) => (err instanceof AdminError ? err.message : 'Something went wrong. Please try again.');
@@ -91,6 +93,7 @@ function NoticeBar({ notice }: { notice: Notice }) {
 /* ------------------------------------------------------------------ Bookings */
 
 function BookingsTab({ people }: { people: Person[] }) {
+  const { getService } = useSiteContent();
   const load = useCallback(() => adminService.listBookings(), []);
   const { data, setData, error, loading, reload } = useLoader(load);
   const [filter, setFilter] = useState<'upcoming' | 'requested' | 'past' | 'all'>('upcoming');
@@ -144,7 +147,7 @@ function BookingsTab({ people }: { people: Person[] }) {
       <ul className="grid gap-4">
         {shown.map((b) => {
           const customer = byId.get(b.customerId);
-          const service = getServiceById(b.serviceId);
+          const service = getService(b.serviceId);
           return (
             <li key={b.id} className="card p-5 sm:p-6" aria-label={`${service?.name ?? b.serviceId} on ${b.date}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -583,7 +586,7 @@ function UsersTab({ people, error, loading, reload }: { people: Person[]; error:
 /* ---------------------------------------------------------------------- Page */
 
 export default function AdminPage() {
-  usePageMeta('Admin', 'Manage Omegs bookings, messages, timesheets and users.');
+  usePageMeta('Admin', 'Manage Omegs bookings, messages, timesheets, users and website content.');
   const [tab, setTab] = useState<Tab>('bookings');
   const loadPeople = useCallback(() => adminService.listPeople(), []);
   const people = useLoader(loadPeople);
@@ -594,7 +597,7 @@ export default function AdminPage() {
       <div className="container-page">
         <span className="eyebrow">Admin</span>
         <h1 className="mt-3 text-3xl font-bold sm:text-4xl">Omegs admin</h1>
-        <p className="mt-2 text-navy-600">Bookings, messages, employee hours and user roles.</p>
+        <p className="mt-2 text-navy-600">Bookings, messages, employee hours, user roles and website content.</p>
 
         <div role="tablist" aria-label="Admin sections" className="mt-8 flex flex-wrap gap-2">
           {tabs.map((t) => (
@@ -630,6 +633,7 @@ export default function AdminPage() {
           {tab === 'messages' && <MessagesTab />}
           {tab === 'timesheets' && <TimesheetsTab people={list} />}
           {tab === 'users' && <UsersTab people={list} error={people.error} loading={people.loading} reload={people.reload} />}
+          {tab === 'site' && <SiteEditor />}
             </>
           )}
         </div>

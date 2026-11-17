@@ -3,7 +3,8 @@ import { FinalCta } from '../components/home/FinalCta';
 import { PageHeader } from '../components/ui/PageHeader';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { usePageMeta } from '../hooks/usePageMeta';
-import { asset } from '../lib/asset';
+import { imageSrc } from '../lib/asset';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 const values = [
   { icon: ShieldCheck, title: 'Trust', description: 'Inviting someone into your space requires trust. We aim to earn it with reliability, respect and clear communication.' },
@@ -14,29 +15,28 @@ const values = [
 
 export default function AboutPage() {
   usePageMeta('About Us', 'Learn about Omegs — our mission to make professional cleaning simple, trustworthy and convenient.');
+  const { about } = useSiteContent().content;
   return (
     <>
       <PageHeader
         eyebrow="About Omegs"
-        title="We're making professional cleaning simple"
-        description="Omegs was created with a straightforward idea: finding, booking and managing quality cleaning should be easy — so you can spend your time on what matters."
+        title={about.title}
+        description={about.intro}
       />
       <section className="py-16 lg:py-24">
         <div className="container-page grid items-center gap-12 lg:grid-cols-2">
           <div className="overflow-hidden rounded-4xl shadow-lift">
-            <img src={asset('/images/about-cleaner.webp')} alt="Cleaner wiping a window frame in a bright room" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+            <img src={imageSrc(about.image)} alt={about.imageAlt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
           </div>
           <div>
-            <SectionHeading align="left" eyebrow="Our mission" title="A cleaner space for a better day" />
+            <SectionHeading align="left" eyebrow="Our mission" title={about.missionTitle} />
             <div className="mt-6 space-y-4 text-lg leading-relaxed text-navy-600">
-              <p>
-                A clean environment changes how you feel at home and at work. Our mission is to make that feeling accessible with professional cleaning services
-                that are easy to book and dependable to receive.
-              </p>
-              <p>
-                Through the Omegs website and mobile app, we're building a service that puts you in control — choose your service, pick a time that works, and keep
-                track of everything in one place.
-              </p>
+              {about.mission
+                .split(/\n\s*\n/)
+                .filter(Boolean)
+                .map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
             </div>
           </div>
         </div>

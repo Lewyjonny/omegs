@@ -1,9 +1,10 @@
-import { generalFaqs } from '../../data/content';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { FaqAccordion } from '../FaqAccordion';
 import { ButtonLink } from '../ui/Button';
 import { SectionHeading } from '../ui/SectionHeading';
 
 export function FaqSection() {
+  const { faqs } = useSiteContent().content;
   return (
     <section className="py-20 lg:py-28" aria-labelledby="faq-heading">
       <div className="container-page grid gap-12 lg:grid-cols-12">
@@ -16,7 +17,7 @@ export function FaqSection() {
           </ButtonLink>
         </div>
         <div className="lg:col-span-8">
-          <FaqAccordion items={generalFaqs} />
+          <FaqAccordion items={faqs} />
         </div>
       </div>
     </section>

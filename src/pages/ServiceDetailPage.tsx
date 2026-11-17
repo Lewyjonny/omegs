@@ -4,13 +4,14 @@ import { FaqAccordion } from '../components/FaqAccordion';
 import { ServiceCard } from '../components/ServiceCard';
 import { WhatsAppLink } from '../components/WhatsAppLink';
 import { ButtonLink } from '../components/ui/Button';
-import { getServiceById, services } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { usePageMeta } from '../hooks/usePageMeta';
 import NotFoundPage from './NotFoundPage';
 
 export default function ServiceDetailPage() {
   const { serviceId } = useParams();
-  const service = getServiceById(serviceId);
+  const { services } = useSiteContent();
+  const service = services.find((s) => s.id === serviceId);
   usePageMeta(service?.name ?? 'Service not found', service?.shortDescription);
 
   if (!service) return <NotFoundPage />;

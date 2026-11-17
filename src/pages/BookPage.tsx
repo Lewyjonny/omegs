@@ -6,7 +6,7 @@ import { Alert } from '../components/ui/Alert';
 import { Button, ButtonLink } from '../components/ui/Button';
 import { SelectField, TextAreaField, TextField } from '../components/ui/FormField';
 import { propertySizes, timeSlots } from '../data/content';
-import { getServiceById, services } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { useAuth } from '../hooks/useAuth';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { formatDate } from '../lib/format';
@@ -25,6 +25,8 @@ export default function BookPage() {
   usePageMeta('Book a Cleaning');
   const { user } = useAuth();
   const [params] = useSearchParams();
+  const { services, getService } = useSiteContent();
+  const getServiceById = (id: string | undefined) => services.find((s) => s.id === id);
   const preselected = getServiceById(params.get('service') ?? undefined)?.id ?? '';
 
   const [form, setForm] = useState<BookingInput>({ serviceId: preselected, date: '', time: '', address: '', propertySize: '', notes: '' });
@@ -83,7 +85,7 @@ export default function BookPage() {
   };
 
   if (confirmed) {
-    const service = getServiceById(confirmed.serviceId);
+    const service = getService(confirmed.serviceId);
     return (
       <section className="bg-surface py-16 lg:py-24">
         <div className="container-page max-w-2xl">

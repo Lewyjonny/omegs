@@ -1,9 +1,10 @@
 import { Bell, CalendarDays, Home, Sparkles, User } from 'lucide-react';
-import { services } from '../data/services';
+import { useSiteContent } from '../hooks/useSiteContent';
 import { asset } from '../lib/asset';
 
 /** Illustrative app UI preview — not a screenshot of a released app. */
 export function PhoneMockup({ className = '' }: { className?: string }) {
+  const { services } = useSiteContent();
   const upcoming = services.slice(0, 3);
   return (
     <div className={`relative mx-auto w-[280px] sm:w-[300px] ${className}`} role="img" aria-label="Preview of the Omegs mobile app showing upcoming bookings and services">

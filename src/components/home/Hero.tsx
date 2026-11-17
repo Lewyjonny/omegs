@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarClock, MousePointerClick, ShieldCheck, Sparkles } from 'lucide-react';
 import { ButtonLink } from '../ui/Button';
-import { asset } from '../../lib/asset';
+import { asset, imageSrc } from '../../lib/asset';
+import { useSiteContent } from '../../hooks/useSiteContent';
 
 const trust = [
   { icon: ShieldCheck, label: 'Professional service' },
@@ -9,21 +10,22 @@ const trust = [
 ];
 
 export function Hero() {
+  const { home } = useSiteContent().content;
   return (
     <section className="relative overflow-hidden bg-white">
       <div aria-hidden className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-mint-100/60 blur-3xl" />
       <div className="container-page relative grid items-center gap-12 pb-20 pt-10 sm:pt-14 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-16">
         <div className="animate-fade-up lg:col-span-6">
           <span className="eyebrow">
-            <Sparkles className="h-3.5 w-3.5" aria-hidden /> Home & commercial cleaning
+            <Sparkles className="h-3.5 w-3.5" aria-hidden /> {home.eyebrow}
           </span>
           <h1 className="mt-6 text-[2.75rem] font-extrabold leading-[1.04] sm:text-6xl lg:text-[4.25rem]">
-            A Cleaner Space.
+            {home.headline}
             <br />
-            <span className="text-mint-600">A Better Day.</span>
+            <span className="text-mint-600">{home.headlineAccent}</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-600 sm:text-xl">
-            Professional cleaning made simple. Discover trusted cleaning services and manage your bookings with the Omegs mobile app.
+            {home.intro}
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <ButtonLink to="/book" size="lg">
@@ -48,8 +50,8 @@ export function Hero() {
         <div className="relative lg:col-span-6">
           <div className="relative overflow-hidden rounded-4xl bg-navy-50 shadow-lift ring-1 ring-navy-900/5">
             <img
-              src={asset('/images/hero.webp')}
-              alt="Bright, freshly cleaned living room with a grey sofa, plants and wooden floors"
+              src={imageSrc(home.heroImage)}
+              alt={home.heroImageAlt}
               width={1024}
               height={683}
               loading="eager"
